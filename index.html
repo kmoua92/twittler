@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
   <head>
     <script src="jquery.js"></script>
@@ -12,6 +12,10 @@
         $body.html('');
 
         var index = streams.home.length - 1;
+
+        // to help with tracking tweets that have already been displayed
+        var lastIndex = index; 
+
         while(index >= 0){
           var tweet = streams.home[index];
           var $tweet = $('<div></div>');
@@ -19,6 +23,28 @@
           $tweet.appendTo($body);
           index -= 1;
         }
+
+        var showNewTweets = function() {
+          // current # of total tweets in array
+          var currIndex = streams.home.length - 1; 
+
+          // check for new tweets in array
+          var newTweets = currIndex - lastIndex; 
+
+          if (newTweets > 0) {
+            for (var i = lastIndex + 1; i <= currIndex; i++) {
+              var tweet = streams.home[i];
+              var $tweet = $('<div></div>');
+            $tweet.text('@' + tweet.user + ': ' + tweet.message);
+            $tweet.appendTo($body);
+            }
+
+            //update lastIndex to prevent function from running if no new tweets
+            lastIndex = currIndex; 
+          }
+        }
+
+        setInterval(showNewTweets, 1000);
 
       });
 
