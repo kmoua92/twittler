@@ -96,11 +96,26 @@ HEADING
 BODY
 ==================================
 */
+.messages {
+	font-family: 'Arial', sans-serif; 
+	font-size: 15px;
+	color: black;
+	text-align: left;
+	margin-bottom: 250px;
+	margin-left: 100px;
+	height: 400px;
+	width: 50%;
+	float: right;
+	overflow: auto;
+}
+
 .main-body {
 	font-family: 'Arial', sans-serif; 
 	font-size: 15px;
 	color: black;
 	text-align: left;
+	height: 400px;
+	overflow: auto;
 }
 
 .tweet {

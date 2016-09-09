@@ -15,26 +15,67 @@
         <div class="subheading">like twitter, but littler</div>
       </div>
     </header>
+
+    <div class = "messages">
+      <script>
+        $(document).ready(function(){
+          /*
+          =========================================
+          Display user's tweets when clicked
+          =========================================
+          */
+
+          // hard to accurately click username with 1 sec auto-refresh, so whole line of tweet is clickable
+          $('.main-body').click(function(event) { 
+            // clear the field each time a new username is clicked
+            $('.messages').text('');
+
+            // grab id of tweet clicked (id for each tweet has been set to tweeter's username)
+            var name= event.target.id; 
+
+            var userTweets = streams.users[name];
+
+            var i = 0;
+            while ( i < userTweets.length){
+              var $messages = $('<div class="tweet"></div>');
+              $messages.text('@' + userTweets[i++].user + ': ' + userTweets[i++].message + ' ' + userTweets[i++].created_at);
+              $messages.prependTo('.messages');
+            }
+          });
+        });
+      </script>
+    </div>
+
     <div class="main-body">
       <script>
 
         $(document).ready(function(){
           var $mainbody = $('body').find('.main-body');
-          // $body.html('');
 
           var index = streams.home.length - 1;
 
           // to help with tracking tweets that have already been displayed
           var lastIndex = index; 
 
+
+          /*
+          ============================================
+          Display initial tweets when page first loads
+          ============================================
+          */
           while(index >= 0){
             var tweet = streams.home[index];
-            var $tweet = $('<div class="tweet"></div>');
+            var $tweet = $('<div class="tweet" id="' + tweet.user + '"></div>');
             $tweet.text('@' + tweet.user + ': ' + tweet.message + ' ' + tweet.created_at);
             $tweet.prependTo($mainbody);
             index -= 1;
           }
 
+          /*
+          ============================================
+          Display new tweets every second
+          ============================================
+          */
           var showNewTweets = function() {
             // current # of total tweets in array
             var currIndex = streams.home.length - 1; 
@@ -45,7 +86,7 @@
             if (newTweets > 0) {
               for (var i = lastIndex + 1; i <= currIndex; i++) {
                 var tweet = streams.home[i];
-                var $tweet = $('<div class="tweet"></div>');
+                var $tweet = $('<div class="tweet" id="' + tweet.user + '"></div>');
               $tweet.text('@' + tweet.user + ': ' + tweet.message + ' ' + tweet.created_at);
               $tweet.prependTo($mainbody);
               }
@@ -56,11 +97,12 @@
           }
 
           setInterval(showNewTweets, 1000);
-
         });
 
       </script>
     </div>
+
+
 
   </body>
 </html>
