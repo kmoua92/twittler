@@ -38,8 +38,9 @@
             var i = 0;
             while ( i < userTweets.length){
               var $messages = $('<div class="tweet"></div>');
-              $messages.text('@' + userTweets[i++].user + ': ' + userTweets[i++].message + ' ' + userTweets[i++].created_at);
+              $messages.text('@' + userTweets[i].user + ': ' + userTweets[i].message + ' ' + userTweets[i].created_at);
               $messages.prependTo('.messages');
+              i++;
             }
           });
         });
@@ -52,28 +53,27 @@
         $(document).ready(function(){
           var $mainbody = $('body').find('.main-body');
 
-          var index = streams.home.length - 1;
+          // last tweet displayed (to help with tracking tweets that have already been displayed)
+          var lastIndex = streams.home.length - 1; 
 
-          // to help with tracking tweets that have already been displayed
-          var lastIndex = index; 
-
+          var index = 0;
 
           /*
           ============================================
           Display initial tweets when page first loads
           ============================================
           */
-          while(index >= 0){
+          while(index < streams.home.length){
             var tweet = streams.home[index];
             var $tweet = $('<div class="tweet" id="' + tweet.user + '"></div>');
             $tweet.text('@' + tweet.user + ': ' + tweet.message + ' ' + tweet.created_at);
             $tweet.prependTo($mainbody);
-            index -= 1;
+            index++;
           }
 
           /*
           ============================================
-          Display new tweets every second
+          Display all new tweets every second
           ============================================
           */
           var showNewTweets = function() {
